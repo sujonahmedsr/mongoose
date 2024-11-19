@@ -11,12 +11,18 @@ const getAllStudentsFromDb = async () => {
     return result
 }
 const getSingleStudentsFromDb = async (id: string) => {
-    const result = await StudentModel.findOne({ id })
+    // const result = await StudentModel.findOne({ id })
+    const result = await StudentModel.aggregate([{$match: {id: id}}])
+    return result
+}
+const deleteSingleStudentsFromDb = async (id: string) => {
+    const result = await StudentModel.updateOne({ id }, {isDeleted: true})
     return result
 }
 
 export const studentsServices = {
     createStudentsIntoDB,
     getAllStudentsFromDb,
-    getSingleStudentsFromDb
+    getSingleStudentsFromDb,
+    deleteSingleStudentsFromDb
 }
